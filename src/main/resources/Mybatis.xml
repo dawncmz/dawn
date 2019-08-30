@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+	<configuration>
+		
+		<properties resource="database.properties"/>
+		
+		<!-- 可以在这里用 settings和setting标签设置全局参数 不过要比较谨慎 -->
+		<settings>
+			<setting  name="logImpl" value="LOG4J"/>
+		</settings>
+		<!-- 别名设置 注意别名忽略大小写-->
+		<typeAliases>
+			<typeAlias type="com.cmz.entity.Student" alias="student"/>
+			<!-- 包内类别名全部为对应类名 -->
+			<package name="com.cmz.entity"/>
+		</typeAliases>
+		
+		<!-- 配置自定义类型转换器 -->
+		<typeHandlers>
+			<!-- <typeHandler handler="com.cmz.converter.BooleanToIntConverter"  javaType="boolean" jdbcType="Integer"/> -->
+		</typeHandlers>
+		
+<!-- 		 <environments default="development">
+		 <environment id="development">
+		 	<transactionManager type="JDBC"/>
+			 <dataSource type="POOLED">
+				 <property name="driver" value="${driver}"/>
+				 <property name="url" value="jdbc:mysql://localhost:3306/test?useSSL=false&amp;serverTimezone=UTC&amp;characterEncoding=UTF-8"/>
+				 <property name="url" value="${url}"/>
+				 <property name="username" value="${username}"/>
+				 <property name="password" value="${password}"/>
+			 </dataSource>
+		 	</environment>
+		 </environments> -->
+		 
+		 
+		 <mappers>
+		 <mapper resource="com/cmz/mapper/StudentMapper.xml"/>
+		 <mapper resource="com/cmz/mapper/ScoreFormMapper.xml"/>
+		 <mapper resource="com/cmz/mapper/TeacherMapper.xml"/>
+		 </mappers>
+
+	</configuration>

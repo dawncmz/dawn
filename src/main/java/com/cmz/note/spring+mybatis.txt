@@ -1,0 +1,33 @@
+spring mybatis 整合
+structs2 springMVC dubbo quartz  hibernate ..
+框架的整合都有一个主次
+目前为止所有框架遇到spring 都要交给spring处理
+
+思路 : SqlSessionFactory -> SqlSession -> Mapper -> CRUD
+核心就是  sqlSession 和 mapper 
+
+所以spring整合mybatis就是将SqlSessionFactory 交给spring管理
+之前是 mybatis.xml--> SqlSessionFactory 
+现在需要将mybatis.xml整合进spring配置文件中
+
+dao层  需要继承sqlSessionDaoSupport类  该类提供一个sqlSession
+然后再dao实现类中直接通过session拿mapper
+同时由于 mapper接口 和 Dao接口的一致性  我们可以让mapper作为Dao接口
+
+其实daoImpl层不需要手动去写  
+我们单独使用mybatis时是直接调用mapper的实现类去操作
+<bean id="studentMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	注入mapperInterface 和  sqlSessionFactory 
+</bean>
+我们在mapper中写sql  创建接口 然后直接贯穿到service层  service直接调用自动生成的studentMapper 牛批
+mapper就成了dao
+
+
+甚至我们可以批量生成mapper实现类
+<bean id="mappers"  class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	注入sqlSessionFactoryBeanName和basePackage com.cmz.mapper
+	//注意<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>!!
+	//不同于前面两种方式
+</bean>
+默认约定:批量产生mapper对象在SpringIoc中id值默认就是首字母小写的接口名!!!!!!!
+service直接注入mapper对象

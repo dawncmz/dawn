@@ -1,0 +1,62 @@
+SpringMVC 是 Structs的竞品 都是针对servlet层进行简化
+
+jar: spring-webmvc.jar
+其他常规包: spring-aop.jar  spring-bean.jar  spring-context.jar...
+
+介入springMVC自带servlet DisPatcherServlet
+servlet controller handler action..包名都代表控制器
+
+
+其实可以混用mvc和原生servelt
+/ 代表除了jsp不拦 剩下的都拦 需要在mvc中配置不拦截的资源(js css html)
+*.do 将controller中的路径尾部都加.do 这样可以省略在mvc中配置不拦截资源
+同时dispatcherServlet在处理路径时会自动去掉do
+两种方式  要么标记拦什么  要么标记不拦什么
+
+
+
+视图解析器默认使用 请求转发的方式返回jsp
+且如果使用指定跳转方式的返回值
+return "forward:success" 或者  "redirect:success" 
+则视图解析器不会处理 需要手动处理路径
+
+
+
+@RequestMapping(value="",method=RequestMethod.xxx,params={"name=zs","age!=23","!address"})
+通过method枚举类型可以指定 拦截的方式 (get post delete put)
+通过params参数可以指定拦截的请求必须有哪些参数 甚至必须等于哪些值 不能等于哪些值(没有age也可以)
+不能有address参数
+ (...,headers={ })  约束请求头
+
+ant风格请求路径
+?  单字符 
+*   任意字符  
+**  任意目录(甚至多层目录) 
+
+rest风格  传值方式   handler/welcome/zs 
+@RequestMapping(value="welcome/{name}")
+ public String test(@PathVariable("name")){ ... }
+在函数中即可直接使用name 参数
+
+或者正常方式 public String  tests(@RequestParam("name" String name)){};
+这样相当于String name=request.getParameter("name");
+@RequestParam(value="name",required=false,defaultValue="zs")
+还可以利用@RequestHeader() 获取头信息
+以及利用@CookieValue("JSESSIONID") 获取cookie 
+
+一般服务器只支持 Put post 不支持delete put 
+常见做法例如过滤器(HidenHttpMethodFilter)拦截处理改造request
+配合jsp <input type="hidden" name="_method" value="DELETE"/>
+
+
+
+
+
+使用实体类接受请求参数
+student属性名必须和form表单中属性Name一样才能自动封装
+甚至不需要你设置什么.....
+
+如何跳转页面时带数据 可以使用ModelAndView(对象) ModelMap Model  后两者差不多
+@SessionAttributes(对象名或者types={clazz.class})    @ModelAttribute
+底层实现也很好猜  就是放在request中 （默认）  
+SessionAttribute注解可以放在类上面使得在将对象放在request中的同时在session中也放一份

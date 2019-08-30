@@ -1,0 +1,78 @@
+controller的返回值
+string  / view  / modelAndView 
+都会被自动转换为ModelAndView 
+然后被ViewResolver进行解析
+最后被渲染成 jsp  ....等等
+
+视图的顶级接口:view
+视图解析器顶级接口:viewResolver
+我们的InternalResourceViewResolver就是jsp解析器
+子类JstlView  可以解析jstl 实现国际化操作
+springMVC会默认使用父类  如果jsp中包含了jstl语言  会自动转换为子类
+
+
+国际化 是指web服务可以根据访问用户所在地区展示不同语言的信息
+需要配置资源文件
+
+
+如何实现 jsp --> jsp 并且经过jsp?
+<mvc:view-control path="handler/testMvcController" view-name="success"/>
+注意即便在xml中直接配置  仍然会收到解析器的处理
+<mvc:annotation-driven></mvc:annotation-driven> mvc基础配置 (注解驱动类？）
+该标签会处理很多与注解相关的事务  
+
+
+springMVC处理静态资源(html css js 图片 视频)
+首先 tomcat的默认处理方式是:如果有url对应的servlet 则交给servlet去处理 没有则交给默认servlet
+tomcat中有一个defaultServlet  defaultServlet的处理方式就是去找对应名字的静态资源(直接访问)
+如果想使得 mvc 同样 有对应的requestMapping 则拦截  没有则交给defaultServelt处理
+加入<mvc:default-servlet-handler></mvc:default-servlet-handler> 以及 annotation-driven
+
+
+我们曾在dao层进行自动类型转换 springMVC也可以设置类型转换
+springMVC自带了一些常见的数据转换器 
+编写自定义转换器 (converter接口)
+然后放到容器里 
+
+
+数据格式化 
+SimpleDateFormate sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+返回给前端系统信息 (Binding Result , Map<>())
+
+Ajax请求 json返回
+首先加jar包   jackson-annotation.jar  jackson-core.jar  jackson-databind.jar
+@ResponseBody  加上后spring会帮你自动处理
+这个标签可以告诉springMVC此时的返回直接送往前端不处理  (不然才会送往解析器) 
+jsp中可以直接操作json对象
+
+
+springmvc 实现文件上传
+本质相同  通过commons-io  和 commons-fileupload jar
+配置 CommonsMultipartResolver
+属性值 -1 表示无限制
+至于处理方法 输入输出流处理
+
+拦截器的原理和过滤器一样  也可以套一个拦截器链
+拦截器接口 HandlerInterceptor
+接口中 preHandle 拦截请求(true放行  false不放)  postHandle 拦截响应  jsp渲染完毕触发afterCompletion()
+然后配置 
+<mvc:interceptors>
+	<bean class="com.cmz.interceptor.TestInterceptor"></bean>
+不设置默认拦截一切请求
+
+
+spring处理异常
+我们在controller中使用注解定义异常处理方法
+@ExceptionHandler({xxxException.class})
+则这个类中其他controller函数出现对应的异常时会跳转到这个方法中(注意只能捕获当前类中)
+注意这个方法的形参只能包含throwable以及其子类
+多个方法同时捕获  短路径优先
+如果想单独写一个类处理异常  类前加 @ControllerAdvice 方法前@ExceptionHandler
+
+spring 异常状态处理
+@ResponseStatus(value=HttpStatus.xxx,reason="提示信息")
+可以加载自定义异常类上 一种是加在目标方法上
+自己去查HttpStatus状态码 对应的 枚举类型
+放在方法的意思就是说请求这个方法返回给前端什么状态码
+仅仅是指示码不要加 reason 加reason会对当前请求走错误处理

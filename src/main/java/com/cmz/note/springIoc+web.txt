@@ -1,0 +1,27 @@
+Spring Ioc 容器初始化 
+	1.将ioc容器中所有的bean实例化为对象
+	2.将各个bean依赖的属性值注入进去
+
+test中 我们通过 new ClassPathXmlApplicationContex("application.xml")进行初始化
+
+javaweb 中 我们总不能每个servlet都new一个context吧(getBean)
+	web中没有统一入口(main)  servlet   jsp都可以是入口
+	可以利用监听器实现，当tomcat启动时 ，通过监听器将springIoc初始化
+	spring-web.jar 已经处理好了	直接配置ContextLoaderListener 
+	我们必须告诉此监听器 context.xml位置  <context-param>(默认位置web-inf中applicationContext.xml)
+	classpath:application.xml 文件夹一个包 的图标都属于类路径
+
+拆分配置文件
+	根据什么拆？ 
+		 1三层结构  (UI service dao 数据库)
+		 2.功能结构(学生，教师，超管)
+	如何合并 <param-value> 中以逗号分割多个xml文件 或者用* 
+		或者一个xml 用<import resources=""/>引用其他文件
+		注意这些xml对应的容器其实默认属于同一个容器(互通) （servletContext)
+	
+注意 tomcat容器(application) 和 ioc容器并不是一个容器
+  我们需要在两个容器之间打通通道   
+  一个方法是重写servlet初始化方法 init() 获取springIoc 容器 
+ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
+所以说ioc容器其实是tomcat容器子容器？总感觉这种方式不太好
+structs 和 springMVC 不需要打通两个容器 会自动处理

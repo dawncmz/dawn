@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<context:component-scan base-package="com.cmz.controller"></context:component-scan>
+	<!-- 视图解析器  没人调用不用id-->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/views/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	
+	<!-- 添加转换器并在factory中注册  -->
+	<bean id="TestConverter" class="com.cmz.converter.TestConverter"></bean>
+	
+	<bean id="ConversionFactory"  class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<ref bean="TestConverter"/>
+			</set>
+		</property>
+	</bean>
+	
+	<!-- 数据格式化 （屏蔽) -->
+	<bean id="formatConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+	</bean>
+	
+	<!-- 配置文件上传解析器  注意这个id不能变 spring初始化会默认寻找该id -->
+	<!-- 就因为这个id写错了  我找了3小时bug -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<property name="maxUploadSize" value="102400"></property>
+	</bean>
+	
+	<!-- conversionFactory是测试用的自定义转换器 中间配置的是处理@ResponseBody默认使用ISO编码集 转换为utf-8 -->
+	<mvc:annotation-driven conversion-service="ConversionFactory" >
+	    <mvc:message-converters>
+	        <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+	            <constructor-arg ref="utf8Charset" />
+	        </bean>
+	    </mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<bean id="utf8Charset" class="java.nio.charset.Charset" factory-method="forName">
+    	<constructor-arg value="UTF-8" />
+	</bean>
+	
+	
+	<mvc:default-servlet-handler></mvc:default-servlet-handler>
+	
+ 	<mvc:interceptors>
+		<mvc:interceptor>
+		<!-- 设置拦截请求 ,基于ant风格 -->
+		<mvc:mapping path="/**"/>
+		<!-- 设置不拦截的请求 -->
+		<mvc:exclude-mapping path="/Test/testUpload"/>
+		<bean class="com.cmz.interceptor.TestInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+</beans>

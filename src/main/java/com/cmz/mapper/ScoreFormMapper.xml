@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmz.mapper.ScoreFormMapper">
+
+	 <select id="queryScoreFormById" resultType="com.cmz.entity.ScoreForm" parameterType="int">
+	 	select * from ScoreForm where sid = #{sid}
+	 </select>
+	 
+	 <select id="queryAllScoreForm" resultType="com.cmz.entity.ScoreForm" >
+	 	select * from ScoreForm 
+	 </select>
+	 
+	 <select id="addScoreForm" parameterType="com.cmz.entity.ScoreForm" >
+	 	insert into scoreform(sid,math,english,chinese,science) values (#{sid},#{math},#{english},#{chinese},#{science})
+	 </select>
+	 <select id="deleteScoreFormById" parameterType="int">
+	 	delete from scoreform where sid = #{id}
+	 </select>	 
+	 <select id="updateScoreForm" parameterType="com.cmz.entity.ScoreForm">
+	 	update scoreform set sid=#{sid},math=#{math},english=#{english},chinese=#{chinese},science=#{science} where sid=#{sid}
+	 </select>
+	 
+	 <select id="queryAllScoreFormOrderBy" resultType="com.cmz.entity.ScoreForm" parameterType="string">
+	 	select * from ScoreForm Order by ${value} desc
+	 </select>
+</mapper>

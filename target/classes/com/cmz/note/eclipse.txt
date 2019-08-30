@@ -1,0 +1,62 @@
+对于xml 要清晰两个方面
+1是谁找到了我 调用了我
+2是我去找谁 去调用谁
+
+ctrl+shift+t  搜索jar包代码
+ctrl shift r  搜索自己代码
+ctrl f    搜索当前文件
+
+任何xml文件下方的namespace属性决定了其基本标签组
+
+
+
+ HTTP 400 错误 - 请求无效 (Bad request)
+在ajax请求后台数据时有时会报 HTTP 400 错误 - 请求无效 (Bad request);出现这个请求无效报错说明请求没有进入到后台服务里；
+原因：1）前端提交数据的字段名称或者是字段类型和后台的实体类不一致，导致无法封装；
+    2）前端提交的到后台的数据应该是json字符串类型，而前端没有将对象转化为字符串类型；
+解决方案：
+1）对照字段名称，类型保证一致性
+2）使用stringify将前端传递的对象转化为字符串    data: JSON.stringify(param)  ;
+
+
+
+永远记住get和set方法以及构造方法是框架使用bean的根本途径
+
+
+
+jquery官网提供2种jQuery的下载，一种是jquery.js另一种是jquery.min.js
+文件名不一定完全相同，但通常情况下：
+jquery.js是完整的未压缩的jQuery库，文件比较大，一般用于阅读学习源码或修改源码，一般不用于线上项目。
+jquery.min.js是由完整版的jQuery库经过压缩得来，压缩后功能与未压缩的完全一样，只是将其中的空白字符、注释、空行等与逻辑无关的内容删除，并进行一些优化。
+这个版本一般用于网站引用使用，减小文件体积，降低网站流量，提升访问速度等。
+
+对于spring bean 的关键属性 我们可以去源码中找  没有就网父类上追
+为什么要去看bean的属性?
+因为很多 处理器 解析器  的关键属性 都可以通过设置property方式直接设定
+当然我们可以在property标签中 直接用 alt / 查看建议  但是源码中毕竟有详细注释
+
+有一个小问题  controller()中的形参 即便不是通过前端传回来的  而是仅仅在函数形参定义  并且在方法中设置值
+就会自动被放进request中 ??? 这个额外参数还会使异常处理失效
+
+throwable 包含 error 和 exception
+
+
+
+关于如何在controller中获取request和response 如果直接写在形参里可能会导致找不到方法
+1.ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        HttpServletResponse response = attributes.getResponse();
+2.可以将请求和响应对象抽取出来放在一个超类中，需要使用这两个对象的controller继承这个类，直接使用即可，代码如下：
+public class BaseController {
+　　// 这些对象何以直接被子类使用
+    protected HttpServletRequest request;
+    protected HttpServletResponse response;
+    protected HttpSession session;
+    @ModelAttribute
+    public void setReqAndRes(HttpServletRequest req, HttpServletResponse res) {
+        this.request = req;
+        this.response = res;
+        this.session = req.getSession();
+    }
+}
+
