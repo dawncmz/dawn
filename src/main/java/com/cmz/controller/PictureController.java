@@ -26,17 +26,25 @@ import org.springframework.web.servlet.ModelAndView;
 import com.cmz.entity.Student;
 import com.cmz.service.IStudentService;
 import com.cmz.util.TipUtil;
-
+/*
+ * 图片处理相关controller
+ */
 @RequestMapping("Picture")
 @Controller
 public class PictureController {
 	@Autowired
 	IStudentService studentService ;
-	
+	/*
+	 * 跳转至照片上传页面
+	 * 存放位置 c:\web_pos\学号.png
+	 */
 	@RequestMapping("toUploadPicture")
 	public String toUploadPicture() {
 		return "uploadPicture";
 	}
+	/*
+	 * 上传照片
+	 */
 	@RequestMapping("uploadPicture")
 	public ModelAndView uploadPicture(@RequestParam("sid")  int sid,
 			@RequestParam("sPicture") MultipartFile file) throws IOException {
@@ -61,7 +69,9 @@ public class PictureController {
 			return TipUtil.TipFactory("已覆盖该学生已有照片");
 		}
 	}
-	
+	/*
+	 * 获取照片
+	 */
 	@RequestMapping("getPicture")
 	public  ModelAndView getPicture(@RequestParam("sid") int sid) throws IOException{
 		

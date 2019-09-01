@@ -8,7 +8,8 @@
 <head>
 <meta charset="UTF-8">
 <title>主界面/全部学生信息</title>
-<base href="http://localhost:8080/springWeb/"/> 
+<!-- <base href="http://106.53.68.197:8080/springWeb/"/> -->
+<base href="http://localhost:8080/springWeb/"/>
 <script src="https://libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
 </head>
 <body>

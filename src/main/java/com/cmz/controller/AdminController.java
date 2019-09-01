@@ -11,12 +11,17 @@ import javax.servlet.http.HttpSession;
 
 import com.cmz.entity.Student;
 import com.cmz.serviceImpl.StudentService;
+/*
+ * 管理controller
+ */
 @Controller
 @RequestMapping("Admin")
 public class AdminController {
 	@Autowired
 	StudentService studentService ;
-	
+	/*
+	 * 首页跳转
+	 */
 	@RequestMapping("Welcome")
 	public ModelAndView welcome(@RequestParam(value="curPage",defaultValue="1") int curPage,
 			@RequestParam(value="pageSize",defaultValue="3") int pageSize,HttpSession session) {
@@ -32,6 +37,17 @@ public class AdminController {
 		mv.addObject("count", count);
 		return mv;
 	}
-	
+	/*
+	 * 登录页面跳转
+	 */
+	@RequestMapping("login")
+	public String login(@RequestParam("pwd") String pwd) {
+		if("cmz00dawn".equals(pwd)) {
+			return "redirect:Welcome.mvc";
+		}else {
+			return "loginFail";
+			
+		}
+	}
 	
 }

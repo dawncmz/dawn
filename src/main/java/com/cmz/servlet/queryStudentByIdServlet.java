@@ -12,7 +12,9 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import com.cmz.entity.Student;
 import com.cmz.service.IStudentService;
 import com.cmz.serviceImpl.StudentService;
-
+/*
+ * ≤‚ ‘”√servlet
+ */
 public class queryStudentByIdServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     IStudentService studentService ;

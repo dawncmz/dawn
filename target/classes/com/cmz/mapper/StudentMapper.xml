@@ -20,7 +20,7 @@
 	 	delete from student where sid = #{id}
 	 </select>	 
 	 <select id="updateStudent" parameterType="student">
-	 	update student set sid=#{sid},sage=#{sage},sname=#{sname},saddress=#{saddress} where sid=#{sid}
+	 	update student set sid=#{sid},sage=#{sage},sname=#{sname},saddress=#{saddress},isHavePicture=#{isHavePicture} where sid=#{sid}
 	 </select>
 	 <!-- 姓名模糊查询 -->
 	 <select id="queryStudentByName" resultType="student" parameterType="string">

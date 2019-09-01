@@ -6,10 +6,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!-- <base href="http://106.53.68.197:8080/springWeb/"/> -->
 <base href="http://localhost:8080/springWeb/"/>
-<title>异常提示</title>
+<title>登陆失败</title>
 </head>
 <body>
-	系统错误!<br/>
-	<a href="Admin/Welcome.mvc?curPage=${sessionScope.curPage }">返回首页</a>
+	用户名密码错误!!<br/>
+	<a href="#">返回</a>
 </body>
 </html>

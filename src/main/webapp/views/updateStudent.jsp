@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>更新学生信息页面</title>
+<!-- <base href="http://106.53.68.197:8080/springWeb/"/> -->
 <base href="http://localhost:8080/springWeb/"/>
 <!--  -->
 </head>

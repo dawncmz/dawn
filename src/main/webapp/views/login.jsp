@@ -6,10 +6,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!-- <base href="http://106.53.68.197:8080/springWeb/"/> -->
 <base href="http://localhost:8080/springWeb/"/>
-<title>异常提示</title>
+<title>请输入密码</title>
 </head>
 <body>
-	系统错误!<br/>
-	<a href="Admin/Welcome.mvc?curPage=${sessionScope.curPage }">返回首页</a>
+	dawncmz个人项目测试beta
+		<form action="Admin/login.mvc" method="post">
+				密码<input type="text" name="pwd"><br/>
+				<input type="submit" value="确定">
+		</form>
 </body>
 </html>
